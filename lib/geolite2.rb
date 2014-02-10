@@ -38,8 +38,7 @@ module GeoLite2
           return nil
         elsif record > @metadata['node_count']
           pos = (record - @metadata['node_count']) - DATA_SECTION_SEPARATOR_SIZE
-          val = decode(pos, @metadata['search_tree_size'] + DATA_SECTION_SEPARATOR_SIZE)[1]
-          return val
+          return decode(pos, @metadata['search_tree_size'] + DATA_SECTION_SEPARATOR_SIZE)[1]
         end
         node_no = record
       end
@@ -50,13 +49,13 @@ module GeoLite2
       node_byte_size = @metadata['node_byte_size']
       rec_byte_size = node_byte_size / 2
       pos = node_byte_size * node_no
-      middle = node_byte_size.size.odd? ? @data[pos + rec_byte_size, 1].unpack('C')[0] : 0
+      middle = @data[pos + rec_byte_size, 1].unpack('C')[0] if node_byte_size.odd?
       if index == 0
         val = read_value(pos, 0, rec_byte_size)[1]
-        val + ((middle >> 4 & 0x7) << 24)
+        val + ((middle >> 4 & 0x7) << 24) if middle
       else
         val = read_value(pos + rec_byte_size + 1, 0, rec_byte_size)[1]
-        val + ((middle & 0x7) << 24)
+        val + ((middle & 0x7) << 24) if middle
       end
     end
 
