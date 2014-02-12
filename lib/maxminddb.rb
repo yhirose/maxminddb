@@ -1,7 +1,7 @@
-require "geolite2/version"
+require "maxminddb/version"
 require 'ipaddr'
 
-module GeoLite2
+module MaxMindDB
 
   def self.new(path)
     Client.new(path)
@@ -25,7 +25,7 @@ module GeoLite2
     end
 
     def inspect
-      "#<GeoLite2::Client: DBPath:'#{@path}'>"
+      "#<MaxMindDB::Client: DBPath:'#{@path}'>"
     end
 
     def lookup(ip)
