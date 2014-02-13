@@ -20,7 +20,7 @@ module MaxMindDB
       pos += METADATA_BEGIN_MARKER.size
 
       @metadata = decode(pos, 0)[1]
-      @metadata['node_byte_size'] = @metadata['record_size'] / 4
+      @metadata['node_byte_size'] = @metadata['record_size'] * 2 / 8
       @metadata['search_tree_size'] = @metadata['node_count'] * @metadata['node_byte_size']
     end
 
@@ -37,8 +37,9 @@ module MaxMindDB
         if record == @metadata['node_count']
           return nil
         elsif record > @metadata['node_count']
+          data_section_start = @metadata['search_tree_size'] + DATA_SECTION_SEPARATOR_SIZE;
           pos = (record - @metadata['node_count']) - DATA_SECTION_SEPARATOR_SIZE
-          return decode(pos, @metadata['search_tree_size'] + DATA_SECTION_SEPARATOR_SIZE)[1]
+          return decode(pos, data_section_start)[1]
         end
         node_no = record
       end
@@ -54,9 +55,10 @@ module MaxMindDB
         val = read_value(pos, 0, rec_byte_size)[1]
         val + ((middle >> 4 & 0x7) << 24) if middle
       else
-        val = read_value(pos + rec_byte_size + 1, 0, rec_byte_size)[1]
+        val = read_value(pos + rec_byte_size + (middle ? 1 : 0), 0, rec_byte_size)[1]
         val + ((middle & 0x7) << 24) if middle
       end
+      val
     end
 
     def decode(pos, base_pos)

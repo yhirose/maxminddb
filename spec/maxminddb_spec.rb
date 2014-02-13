@@ -4,12 +4,15 @@ describe MaxMindDB do
   IP = '74.125.225.224'
 
   before do
-    @mmdb = MaxMindDB.new('spec/GeoLite2-City.mmdb')
+    @city = MaxMindDB.new('spec/GeoLite2-City.mmdb')
+    @country = MaxMindDB.new('spec/GeoLite2-Country.mmdb')
   end
 
   it 'should ' do
-    @mmdb.lookup(IP)['city']['names']['en'].should == 'Mountain View'
-    @mmdb.lookup(IP)['location']['longitude'].should == -122.0574
+    @city.lookup(IP)['city']['names']['en'].should == 'Mountain View'
+    @city.lookup(IP)['location']['longitude'].should == -122.0574
+
+    @country.lookup(IP)['country']['names']['en'].should == 'United States'
   end
 end
 
