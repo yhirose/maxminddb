@@ -11,6 +11,8 @@ module MaxMindDB
   class Client
     METADATA_BEGIN_MARKER = "\xAB\xCD\xEFMaxMind.com".encode('ascii-8bit', 'ascii-8bit')
     DATA_SECTION_SEPARATOR_SIZE = 16
+    SIZE_BASE_VALUES = [0, 29, 285, 65821]
+    POINTER_BASE_VALUES = [0, 0, 2048, 526336]
 
     def initialize(path)
       @path = path
@@ -32,9 +34,9 @@ module MaxMindDB
     def lookup(ip)
       node_no = 0
       addr = addr_from_ip(ip)
-      for i in 0 ... 128
-        index = (addr >> (127 - i)) & 1
-        record = read_record(node_no, index)
+      for i in 0 ... 128 
+        flag = (addr >> (127 - i)) & 1
+        record = read_record(node_no, flag)
         if record == @metadata['node_count']
           return MaxMindDB::Result.new(nil)
         elsif record > @metadata['node_count']
@@ -49,16 +51,16 @@ module MaxMindDB
 
     private
 
-    def read_record(node_no, index)
+    def read_record(node_no, flag)
       node_byte_size = @metadata['node_byte_size']
       rec_byte_size = node_byte_size / 2
       pos = node_byte_size * node_no
       middle = @data[pos + rec_byte_size, 1].unpack('C')[0] if node_byte_size.odd?
-      if index == 0
+      if flag == 0
         val = read_value(pos, 0, rec_byte_size)[1]
         val + ((middle >> 4 & 0x7) << 24) if middle
       else
-        val = read_value(pos + rec_byte_size + (middle ? 1 : 0), 0, rec_byte_size)[1]
+        val = read_value(pos + node_byte_size - rec_byte_size, 0, rec_byte_size)[1]
         val + ((middle & 0x7) << 24) if middle
       end
       val
@@ -73,16 +75,9 @@ module MaxMindDB
       if type == 1 # pointer
         size = ((ctrl >> 3) & 0x3) + 1
         v1 = ctrl & 0x7
-
-        base = 0
-        case size
-        when 2; base = 2048
-        when 3; base = 526336
-        end
-
         pos, v2 = read_value(pos, base_pos, size)
-        pointer = (v1 << (8 * size)) + v2 + base
 
+        pointer = (v1 << (8 * size)) + v2 + POINTER_BASE_VALUES[size] 
         val = decode(pointer, base_pos)[1]
       else
         if type == 0 # extended type
@@ -91,18 +86,10 @@ module MaxMindDB
         end
 
         size = ctrl & 0x1f
-
         if size >= 29
           byte_size = size - 29 + 1
-
-          case byte_size
-          when 1; base = 29
-          when 2; base = 285
-          when 3; base = 65821
-          end
-
           pos, val = read_value(pos, base_pos, byte_size)
-          size = val + base
+          size = val + SIZE_BASE_VALUES[byte_size]
         end
 
         case type
@@ -157,8 +144,8 @@ module MaxMindDB
     end
 
     def read_value(pos, base_pos, size)
-      a = @data[pos + base_pos, size].unpack('C*')
-      val = a.inject(0){|r, v| (r << 8) + v }
+      bytes = @data[pos + base_pos, size].unpack('C*')
+      val = bytes.inject(0){|r, v| (r << 8) + v }
       [pos + size, val]
     end
 
