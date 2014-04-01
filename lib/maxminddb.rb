@@ -1,4 +1,5 @@
 require "maxminddb/version"
+require 'maxminddb/result'
 require 'ipaddr'
 
 module MaxMindDB
@@ -35,11 +36,11 @@ module MaxMindDB
         index = (addr >> (127 - i)) & 1
         record = read_record(node_no, index)
         if record == @metadata['node_count']
-          return nil
+          return MaxMindDB::Result.new(nil)
         elsif record > @metadata['node_count']
           data_section_start = @metadata['search_tree_size'] + DATA_SECTION_SEPARATOR_SIZE;
           pos = (record - @metadata['node_count']) - DATA_SECTION_SEPARATOR_SIZE
-          return decode(pos, data_section_start)[1]
+          return MaxMindDB::Result.new(decode(pos, data_section_start)[1])
         end
         node_no = record
       end

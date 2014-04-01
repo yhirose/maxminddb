@@ -8,26 +8,45 @@ Pure Ruby [MaxMind DB](http://maxmind.github.io/MaxMind-DB/) binary file reader.
 
 Add this line to your application's Gemfile:
 
-    gem 'maxminddb'
+```ruby
+gem 'maxminddb'
+```
 
 And then execute:
 
-    $ bundle
+```sh
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install maxminddb
+```sh
+$ gem install maxminddb
+```
 
 ## Usage
 
-    db = MaxMindDB.new('./GeoLite2-City.mmdb')
-    ret = db.lookup('123.456.789.012');
-    if ret
-        country_name = ret['country']['names']['en']
-        country_iso_code = ret['country']['iso_code']
-        city_name = ret['city']['names']['en']
-        latitude = ret['location']['latitude']
-    end
+```ruby
+db = MaxMindDB.new('./GeoLite2-City.mmdb')
+ret = db.lookup('74.125.225.224')
+
+ret.found? # => true
+ret.country.name # => 'United States'
+ret.country.name('zh-CN') # => '美国'
+ret.country.iso_code # => 'US'
+ret.city.name(:fr) # => 'Mountain View'
+ret.location.latitude # => -122.0574
+```
+
+Even if no result could be found, you can ask for the attributes without guarding for nil:
+
+```ruby
+db = MaxMindDB.new('./GeoLite2-City.mmdb')
+ret = db.lookup('127.0.0.1')
+ret.found? # => false
+ret.country.name # => nil
+```
+
 
 ## Contributing
 
