@@ -30,8 +30,8 @@ module MaxMindDB
 
     def lookup(ip)
       node_no = 0
-      addr = IPAddr.new(ip).ipv4_compat.to_i
-      for i in 0 ... 128 
+      addr = addr_from_ip(ip)
+      for i in 0 ... 128
         index = (addr >> (127 - i)) & 1
         record = read_record(node_no, index)
         if record == @metadata['node_count']
@@ -45,6 +45,8 @@ module MaxMindDB
       end
       raise 'invalid file format'
     end
+
+    private
 
     def read_record(node_no, index)
       node_byte_size = @metadata['node_byte_size']
@@ -78,7 +80,7 @@ module MaxMindDB
         end
 
         pos, v2 = read_value(pos, base_pos, size)
-        pointer = (v1 << (8 * size)) + v2 + base 
+        pointer = (v1 << (8 * size)) + v2 + base
 
         val = decode(pointer, base_pos)[1]
       else
@@ -157,6 +159,12 @@ module MaxMindDB
       a = @data[pos + base_pos, size].unpack('C*')
       val = a.inject(0){|r, v| (r << 8) + v }
       [pos + size, val]
+    end
+
+    def addr_from_ip(ip)
+      addr = IPAddr.new(ip)
+      addr = addr.ipv4_compat if addr.ipv4?
+      addr.to_i
     end
   end
 end

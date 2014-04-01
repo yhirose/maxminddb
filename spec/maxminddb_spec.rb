@@ -18,6 +18,18 @@ describe MaxMindDB do
     it 'returns United States as the English country name' do
       expect(country_db.lookup(ip)['country']['names']['en']).to eq('United States')
     end
+
+    it 'returns US as the country iso code' do
+      expect(country_db.lookup(ip)['country']['iso_code']).to eq('US')
+    end
+  end
+
+  context 'for the ip 2001:708:510:8:9a6:442c:f8e0:7133' do
+    let(:ip) { '2001:708:510:8:9a6:442c:f8e0:7133' }
+
+    it 'returns FI as the country iso code' do
+      expect(country_db.lookup(ip)['country']['iso_code']).to eq('FI')
+    end
   end
 end
 
