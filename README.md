@@ -2,6 +2,8 @@
 
 Pure Ruby [MaxMind DB](http://maxmind.github.io/MaxMind-DB/) binary file reader.
 
+[![Code Climate](https://codeclimate.com/github/yhirose/maxminddb.png)](https://codeclimate.com/github/yhirose/maxminddb)
+
 ## Installation
 
 Add this line to your application's Gemfile:
