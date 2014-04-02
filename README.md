@@ -2,6 +2,7 @@
 
 Pure Ruby [MaxMind DB](http://maxmind.github.io/MaxMind-DB/) binary file reader.
 
+[![Gem Version](https://badge.fury.io/rb/maxminddb.svg)](http://badge.fury.io/rb/maxminddb)
 [![Code Climate](https://codeclimate.com/github/yhirose/maxminddb.png)](https://codeclimate.com/github/yhirose/maxminddb)
 
 ## Installation
