@@ -1,8 +1,8 @@
 require 'maxminddb'
 
 describe MaxMindDB do
-  let(:city_db) { MaxMindDB.new('spec/GeoLite2-City.mmdb') }
-  let(:country_db) { MaxMindDB.new('spec/GeoLite2-Country.mmdb') }
+  let(:city_db) { MaxMindDB.new('spec/cache/GeoLite2-City.mmdb') }
+  let(:country_db) { MaxMindDB.new('spec/cache/GeoLite2-Country.mmdb') }
 
   context 'for the ip 74.125.225.224' do
     let(:ip) { '74.125.225.224' }
