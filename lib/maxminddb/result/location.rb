@@ -2,7 +2,7 @@ module MaxMindDB
   class Result
     class Location
       def initialize(raw)
-        @raw = Hash(raw)
+        @raw = raw || {}
       end
 
       def latitude

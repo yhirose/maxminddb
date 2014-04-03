@@ -5,7 +5,7 @@ require_relative 'result/postal'
 module MaxMindDB
   class Result
     def initialize(raw)
-      @raw = Hash(raw)
+      @raw = raw || {}
     end
 
     def [](attr)

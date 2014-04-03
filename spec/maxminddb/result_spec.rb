@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 require 'maxminddb'
 
 describe MaxMindDB::Result do
