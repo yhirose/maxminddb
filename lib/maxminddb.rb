@@ -9,7 +9,7 @@ module MaxMindDB
   end
 
   class Client
-    METADATA_BEGIN_MARKER = "\xAB\xCD\xEFMaxMind.com".encode('ascii-8bit', 'ascii-8bit')
+    METADATA_BEGIN_MARKER = ([0xAB, 0xCD, 0xEF].pack('C*') + 'MaxMind.com').encode('ascii-8bit', 'ascii-8bit')
     DATA_SECTION_SEPARATOR_SIZE = 16
     SIZE_BASE_VALUES = [0, 29, 285, 65821]
     POINTER_BASE_VALUES = [0, 0, 2048, 526336]
