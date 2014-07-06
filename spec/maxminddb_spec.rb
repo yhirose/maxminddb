@@ -39,8 +39,8 @@ describe MaxMindDB do
       expect(city_db.lookup(ip)).to be_found
     end
 
-    it 'returns FI as the country iso code' do
-      expect(country_db.lookup(ip).country.iso_code).to eq('FI')
+    it 'returns LV as the country iso code' do
+      expect(country_db.lookup(ip).country.iso_code).to eq('LV')
     end
   end
 
