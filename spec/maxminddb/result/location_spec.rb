@@ -1,4 +1,5 @@
 require 'maxminddb'
+require 'rspec/its'
 
 describe MaxMindDB::Result::Location do
   subject(:result) { described_class.new(raw_result) }

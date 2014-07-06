@@ -116,7 +116,7 @@ describe MaxMindDB::Result do
   describe '#found?' do
     context 'with a result' do
       it 'should return true' do
-        expect(result.found?).to be_true
+        expect(result.found?).to be_truthy
       end
     end
 
@@ -124,7 +124,7 @@ describe MaxMindDB::Result do
       let(:raw_result) { nil }
 
       it 'should return false' do
-        expect(result.found?).to be_false
+        expect(result.found?).to be_falsy
       end
     end
   end
@@ -198,7 +198,7 @@ describe MaxMindDB::Result do
       end
 
       it 'should contain only MaxMindDB::Result::NamedLocation' do
-        expect(result.subdivisions.all? { |r| r.kind_of?(MaxMindDB::Result::NamedLocation)}).to be_true
+        expect(result.subdivisions.all? { |r| r.kind_of?(MaxMindDB::Result::NamedLocation)}).to be_truthy
       end
 
       it 'should initialize the location with the correct attributes' do
