@@ -34,7 +34,7 @@ module MaxMindDB
     def lookup(ip)
       node_no = 0
       addr = addr_from_ip(ip)
-      for i in 0 ... 128 
+      for i in 0 ... 128
         flag = (addr >> (127 - i)) & 1
         record = read_record(node_no, flag)
         if record == @metadata['node_count']
@@ -77,7 +77,7 @@ module MaxMindDB
         v1 = ctrl & 0x7
         pos, v2 = read_value(pos, base_pos, size)
 
-        pointer = (v1 << (8 * size)) + v2 + POINTER_BASE_VALUES[size] 
+        pointer = (v1 << (8 * size)) + v2 + POINTER_BASE_VALUES[size]
         val = decode(pointer, base_pos)[1]
       else
         if type == 0 # extended type
