@@ -40,7 +40,7 @@ describe MaxMindDB do
     end
 
     it 'returns LV as the country iso code' do
-      expect(country_db.lookup(ip).country.iso_code).to eq('LV')
+      expect(country_db.lookup(ip).country.iso_code).to eq('LU')
     end
   end
 
