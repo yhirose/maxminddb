@@ -30,6 +30,22 @@ describe MaxMindDB do
     it 'returns US as the country iso code' do
       expect(country_db.lookup(ip).country.iso_code).to eq('US')
     end
+
+    context 'as a Fixnum' do
+      let(:integer_ip) { IPAddr.new(ip).to_i }
+
+      it 'returns a MaxMindDB::Result' do
+        expect(city_db.lookup(integer_ip)).to be_kind_of(MaxMindDB::Result)
+      end
+
+      it 'returns Mountain View as the English name' do
+        expect(city_db.lookup(integer_ip).city.name).to eq('Mountain View')
+      end
+
+      it 'returns United States as the English country name' do
+        expect(country_db.lookup(integer_ip).country.name).to eq('United States')
+      end
+    end
   end
 
   context 'for the ip 2001:708:510:8:9a6:442c:f8e0:7133' do
@@ -41,6 +57,14 @@ describe MaxMindDB do
 
     it 'returns LV as the country iso code' do
       expect(country_db.lookup(ip).country.iso_code).to eq('LU')
+    end
+
+    context 'as an integer' do
+      let(:integer_ip) { IPAddr.new(ip).to_i }
+
+      it 'returns LV as the country iso code' do
+        expect(country_db.lookup(integer_ip).country.iso_code).to eq('LU')
+      end
     end
   end
 

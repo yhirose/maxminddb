@@ -150,9 +150,14 @@ module MaxMindDB
     end
 
     def addr_from_ip(ip)
-      addr = IPAddr.new(ip)
-      addr = addr.ipv4_compat if addr.ipv4?
-      addr.to_i
+      klass = ip.class
+      if klass == Fixnum || klass == Bignum
+        ip
+      else
+        addr = IPAddr.new(ip)
+        addr = addr.ipv4_compat if addr.ipv4?
+        addr.to_i
+      end
     end
   end
 end
