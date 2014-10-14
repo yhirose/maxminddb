@@ -55,15 +55,15 @@ describe MaxMindDB do
       expect(city_db.lookup(ip)).to be_found
     end
 
-    it 'returns LV as the country iso code' do
-      expect(country_db.lookup(ip).country.iso_code).to eq('LU')
+    it 'returns FI as the country iso code' do
+      expect(country_db.lookup(ip).country.iso_code).to eq('FI')
     end
 
     context 'as an integer' do
       let(:integer_ip) { IPAddr.new(ip).to_i }
 
-      it 'returns LV as the country iso code' do
-        expect(country_db.lookup(integer_ip).country.iso_code).to eq('LU')
+      it 'returns FI as the country iso code' do
+        expect(country_db.lookup(integer_ip).country.iso_code).to eq('FI')
       end
     end
   end
@@ -77,6 +77,18 @@ describe MaxMindDB do
 
     it "doesn't find data" do
       expect(city_db.lookup(ip)).to_not be_found
+    end
+  end
+
+  context 'for the ip 185.23.124.1' do
+    let(:ip) { '185.23.124.1' }
+
+    it 'returns a MaxMindDB::Result' do
+      expect(city_db.lookup(ip)).to be_kind_of(MaxMindDB::Result)
+    end
+
+    it 'returns SA as the country iso code' do
+      expect(country_db.lookup(ip).country.iso_code).to eq('SA')
     end
   end
 end
