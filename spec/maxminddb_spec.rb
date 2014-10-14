@@ -80,15 +80,23 @@ describe MaxMindDB do
     end
   end
 
-  context 'for the ip 185.23.124.1' do
-    let(:ip) { '185.23.124.1' }
+  context 'test ips' do
+    [
+      ['185.23.124.1', 'SA'],
+      ['178.72.254.1', 'CZ'],
+      ['95.153.177.210', 'RU'],
+      ['200.148.105.119', 'BR'],
+      ['195.59.71.43', 'GB'],
+      ['179.175.47.87', 'BR'],
+      ['202.67.40.50', 'ID'],
+    ].each do |ip, iso|
+      it 'returns a MaxMindDB::Result' do
+        expect(city_db.lookup(ip)).to be_kind_of(MaxMindDB::Result)
+      end
 
-    it 'returns a MaxMindDB::Result' do
-      expect(city_db.lookup(ip)).to be_kind_of(MaxMindDB::Result)
-    end
-
-    it 'returns SA as the country iso code' do
-      expect(country_db.lookup(ip).country.iso_code).to eq('SA')
+      it "returns #{iso} as the country iso code" do
+        expect(country_db.lookup(ip).country.iso_code).to eq(iso)
+      end
     end
   end
 end
