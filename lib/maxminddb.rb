@@ -16,7 +16,7 @@ module MaxMindDB
 
     def initialize(path)
       @path = path
-      @data = File.open(path, "rb:ascii-8bit").read
+      @data = File.binread(path)
 
       pos = @data.rindex(METADATA_BEGIN_MARKER)
       raise 'invalid file format' unless pos
