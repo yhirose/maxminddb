@@ -36,15 +36,16 @@ module MaxMindDB
       addr = addr_from_ip(ip)
       for i in 0 ... 128
         flag = (addr >> (127 - i)) & 1
-        record = read_record(node_no, flag)
-        if record == @metadata['node_count']
-          return MaxMindDB::Result.new(nil)
-        elsif record > @metadata['node_count']
+        next_node_no = read_record(node_no, flag)
+        if next_node_no == 0
+          raise 'invalid file format'
+        elsif next_node_no >= @metadata['node_count']
           data_section_start = @metadata['search_tree_size'] + DATA_SECTION_SEPARATOR_SIZE;
-          pos = (record - @metadata['node_count']) - DATA_SECTION_SEPARATOR_SIZE
+          pos = (next_node_no - @metadata['node_count']) - DATA_SECTION_SEPARATOR_SIZE
           return MaxMindDB::Result.new(decode(pos, data_section_start)[1])
+        else
+          node_no = next_node_no
         end
-        node_no = record
       end
       raise 'invalid file format'
     end
@@ -56,12 +57,12 @@ module MaxMindDB
       rec_byte_size = node_byte_size / 2
       pos = node_byte_size * node_no
       middle = @data[pos + rec_byte_size, 1].unpack('C')[0] if node_byte_size.odd?
-      if flag == 0
+      if flag == 0 # left
         val = read_value(pos, 0, rec_byte_size)[1]
-        val + ((middle >> 4 & 0x7) << 24) if middle
-      else
+        val += ((middle & 0xf0) << 20) if middle
+      else # right
         val = read_value(pos + node_byte_size - rec_byte_size, 0, rec_byte_size)[1]
-        val + ((middle & 0x7) << 24) if middle
+        val += ((middle & 0xf) << 24) if middle
       end
       val
     end
