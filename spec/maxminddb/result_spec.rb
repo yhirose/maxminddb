@@ -32,6 +32,11 @@ describe MaxMindDB::Result do
       "iso_code"=>"US",
       "names"=>{"de"=>"USA", "en"=>"United States", "es"=>"Estados Unidos", "fr"=>"États-Unis", "ja"=>"アメリカ合衆国", "pt-BR"=>"Estados Unidos", "ru"=>"США", "zh-CN"=>"美国"}
     },
+    "represented_country"=>{
+      "geoname_id"=>6252001,
+      "iso_code"=>"US",
+      "names"=>{"de"=>"USA", "en"=>"United States", "es"=>"Estados Unidos", "fr"=>"États-Unis", "ja"=>"アメリカ合衆国", "pt-BR"=>"Estados Unidos", "ru"=>"США", "zh-CN"=>"美国"}
+    },
     "subdivisions"=>[
       {
         "geoname_id"=>5332921,
@@ -183,6 +188,20 @@ describe MaxMindDB::Result do
         expect(MaxMindDB::Result::NamedLocation).to receive(:new).with(raw_result['registered_country'])
 
         result.registered_country
+      end
+    end
+  end
+
+  describe '#represented_country' do
+    context 'with a result' do
+      it 'should be a kind of MaxMindDB::Result::NamedLocation' do
+        expect(result.represented_country).to be_kind_of(MaxMindDB::Result::NamedLocation)
+      end
+
+      it 'should initialize the location with the represented_country attributes' do
+        expect(MaxMindDB::Result::NamedLocation).to receive(:new).with(raw_result['represented_country'])
+
+        result.represented_country
       end
     end
   end
