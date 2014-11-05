@@ -40,6 +40,10 @@ module MaxMindDB
       @_registered_country ||= NamedLocation.new(raw['registered_country'])
     end
 
+    def represented_country
+      @_represented_country ||= NamedLocation.new(raw['represented_country'])
+    end
+
     def subdivisions
       @_subdivisions ||= Array(raw['subdivisions']).map { |hash| NamedLocation.new(hash) }
     end
