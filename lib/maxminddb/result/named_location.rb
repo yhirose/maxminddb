@@ -5,6 +5,10 @@ module MaxMindDB
         @raw = raw || {}
       end
 
+      def code
+        raw['code']
+      end
+
       def geoname_id
         raw['geoname_id']
       end
