@@ -56,7 +56,7 @@ module MaxMindDB
     def read_record(node_no, flag)
       rec_byte_size = @node_byte_size / 2
       pos = @node_byte_size * node_no
-      middle = @data[pos + rec_byte_size, 1].unpack('C')[0] if @node_byte_size.odd?
+      middle = @data[pos + rec_byte_size].ord if @node_byte_size.odd?
       if flag == 0 # left
         val = read_value(pos, 0, rec_byte_size)[1]
         val += ((middle & 0xf0) << 20) if middle
@@ -68,7 +68,7 @@ module MaxMindDB
     end
 
     def decode(pos, base_pos)
-      ctrl = @data[pos + base_pos].unpack('C')[0]
+      ctrl = @data[pos + base_pos].ord
       pos += 1
 
       type = ctrl >> 5
@@ -82,7 +82,7 @@ module MaxMindDB
         val = decode(pointer, base_pos)[1]
       else
         if type == 0 # extended type
-          type = 7 + @data[pos + base_pos].unpack('C')[0]
+          type = 7 + @data[pos + base_pos].ord
           pos += 1
         end
 
