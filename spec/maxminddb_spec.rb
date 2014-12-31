@@ -23,6 +23,10 @@ describe MaxMindDB do
       expect(city_db.lookup(ip).location.longitude).to eq(-122.0574)
     end
 
+    it 'returns nil for is_anonymous_proxy' do
+      expect(city_db.lookup(ip).traits.is_anonymous_proxy).to eq(nil)
+    end
+
     it 'returns United States as the English country name' do
       expect(country_db.lookup(ip).country.name).to eq('United States')
     end
@@ -97,6 +101,14 @@ describe MaxMindDB do
       it "returns #{iso} as the country iso code" do
         expect(country_db.lookup(ip).country.iso_code).to eq(iso)
       end
+    end
+  end
+
+  context 'test boolean data' do
+    let(:ip) { '41.194.0.1' }
+
+    it 'returns true for the is_satellite_provider trait' do
+      expect(city_db.lookup(ip).traits.is_satellite_provider).to eq(true)
     end
   end
 end
