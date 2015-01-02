@@ -37,6 +37,9 @@ describe MaxMindDB::Result do
       "iso_code"=>"US",
       "names"=>{"de"=>"USA", "en"=>"United States", "es"=>"Estados Unidos", "fr"=>"États-Unis", "ja"=>"アメリカ合衆国", "pt-BR"=>"Estados Unidos", "ru"=>"США", "zh-CN"=>"美国"}
     },
+    "traits"=>{
+      "is_satellite_provider"=>true
+    },
     "subdivisions"=>[
       {
         "geoname_id"=>5332921,
@@ -236,6 +239,28 @@ describe MaxMindDB::Result do
 
       it 'should be empty' do
         expect(result.subdivisions).to be_empty
+      end
+    end
+  end
+
+  describe '#traits' do
+    context 'with a result' do
+      it 'should return a kind of MaxMindDB::Result::Traits' do
+        expect(result.traits).to be_kind_of(MaxMindDB::Result::Traits)
+      end
+
+      it 'should initialize the object with the traits attributes' do
+        expect(MaxMindDB::Result::Traits).to receive(:new).with(raw_result['traits'])
+
+        result.traits
+      end
+    end
+
+    context "without a result" do
+      let(:raw_result) { nil }
+
+      it 'should be a kind of MaxMindDB::Result::Traits' do
+        expect(result.traits).to be_kind_of(MaxMindDB::Result::Traits)
       end
     end
   end

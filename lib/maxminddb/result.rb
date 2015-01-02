@@ -1,6 +1,7 @@
 require_relative 'result/location'
 require_relative 'result/named_location'
 require_relative 'result/postal'
+require_relative 'result/traits'
 
 module MaxMindDB
   class Result
@@ -46,6 +47,10 @@ module MaxMindDB
 
     def subdivisions
       @_subdivisions ||= Array(raw['subdivisions']).map { |hash| NamedLocation.new(hash) }
+    end
+
+    def traits
+      @_traits ||= Traits.new(raw['traits'])
     end
 
     private
