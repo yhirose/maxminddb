@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["yhirose"]
   spec.email         = ["yuji.hirose.bug@gmail.com"]
   spec.summary       = %q{MaxMind DB binary file reader.}
-  spec.description   = %q{Pure Ruby MaxMind DB binary file reader.}
+  spec.description   = %q{Pure Ruby MaxMind DB (GeoIP2) binary file reader.}
   spec.homepage      = "https://github.com/yhirose/maxminddb"
   spec.license       = "MIT"
 
