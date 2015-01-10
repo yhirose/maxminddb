@@ -1,8 +1,8 @@
 # maxminddb
 
-Pure Ruby [MaxMind DB](http://maxmind.github.io/MaxMind-DB/) GeoIP2 binary file reader.
+Pure Ruby [GeoIP2 MaxMind DB](http://maxmind.github.io/MaxMind-DB/) reader, which doesn't require [libmaxminddb](https://github.com/maxmind/libmaxminddb).
 
-You can find more information about the GeoIP2 database [here](MaxMind DB File Format Specification).
+You can find more information about the GeoIP2 database [here](http://dev.maxmind.com/geoip/geoip2/downloadable/).
 
 [![Gem Version](https://badge.fury.io/rb/maxminddb.svg)](http://badge.fury.io/rb/maxminddb)
 [![Build Status](https://travis-ci.org/yhirose/maxminddb.svg?branch=master)](https://travis-ci.org/yhirose/maxminddb)
