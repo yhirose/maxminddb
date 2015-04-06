@@ -53,6 +53,10 @@ module MaxMindDB
       @_traits ||= Traits.new(raw['traits'])
     end
 
+    def to_hash
+      @_to_hash ||= raw.clone
+    end
+
     private
 
     attr_reader :raw

@@ -55,6 +55,16 @@ describe MaxMindDB::Result do
     end
   end
 
+  describe '#to_hash' do
+    it 'should be a kind of Hash' do
+      expect(result.to_hash).to be_kind_of(Hash)
+    end
+
+    it 'should return full raw data' do
+      expect(result.to_hash).to eq(raw_result)
+    end
+  end
+
   describe '#city' do
     context 'with a result' do
       it 'should be a kind of MaxMindDB::Result::NamedLocation' do
