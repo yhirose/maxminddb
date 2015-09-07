@@ -46,7 +46,8 @@ describe MaxMindDB::Result do
         "iso_code"=>"CA",
         "names"=>{"de"=>"Kalifornien", "en"=>"California", "es"=>"California", "fr"=>"Californie", "ja"=>"カリフォルニア州", "pt-BR"=>"Califórnia", "ru"=>"Калифорния", "zh-CN"=>"加利福尼亚州"}
       }
-    ]
+    ],
+    "connection_type"=>"Dialup"
   } }
 
   describe '#[]' do
@@ -271,6 +272,22 @@ describe MaxMindDB::Result do
 
       it 'should be a kind of MaxMindDB::Result::Traits' do
         expect(result.traits).to be_kind_of(MaxMindDB::Result::Traits)
+      end
+    end
+  end
+
+  describe '#connection_type' do
+    context 'with a result' do
+      it 'should return a String representation of connection type' do
+        expect(result.connection_type).to eq("Dialup")
+      end
+    end
+
+    context "without a result" do
+      let(:raw_result) { nil }
+
+      it 'should be nil' do
+        expect(result.connection_type).to be_nil
       end
     end
   end
