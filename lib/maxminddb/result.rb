@@ -53,6 +53,10 @@ module MaxMindDB
       @_traits ||= Traits.new(raw['traits'])
     end
 
+    def connection_type
+      @_connection_type ||= raw['connection_type']
+    end
+
     def to_hash
       @_to_hash ||= raw.clone
     end
