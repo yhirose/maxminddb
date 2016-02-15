@@ -110,6 +110,9 @@ describe MaxMindDB do
     it 'returns true for the is_satellite_provider trait' do
       expect(city_db.lookup(ip).traits.is_satellite_provider).to eq(true)
     end
+
+    # There are no false booleans in the database that we can test.
+    # False values are simply omitted.
   end
 end
 

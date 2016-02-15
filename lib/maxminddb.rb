@@ -134,7 +134,7 @@ module MaxMindDB
         when 13 # end marker
           val = nil
         when 14 # boolean
-          val = size ? true : false
+          val = (size != 0)
         when 15 # float
           val = @data[pos + base_pos, size].unpack('g')[0]
           pos += size
