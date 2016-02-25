@@ -21,10 +21,11 @@ module MaxMindDB
       pos = @data.rindex(METADATA_BEGIN_MARKER)
       raise 'invalid file format' unless pos
       pos += METADATA_BEGIN_MARKER.size
+      metadata = decode(pos, 0)[1]
 
-      @metadata = decode(pos, 0)[1]
-      @metadata['node_byte_size'] = @metadata['record_size'] * 2 / 8
-      @metadata['search_tree_size'] = @metadata['node_count'] * @metadata['node_byte_size']
+      @node_count = metadata['node_count']
+      @node_byte_size = metadata['record_size'] * 2 / 8
+      @search_tree_size = @node_count * @node_byte_size
     end
 
     def inspect
@@ -39,9 +40,9 @@ module MaxMindDB
         next_node_no = read_record(node_no, flag)
         if next_node_no == 0
           raise 'invalid file format'
-        elsif next_node_no >= @metadata['node_count']
-          data_section_start = @metadata['search_tree_size'] + DATA_SECTION_SEPARATOR_SIZE;
-          pos = (next_node_no - @metadata['node_count']) - DATA_SECTION_SEPARATOR_SIZE
+        elsif next_node_no >= @node_count
+          data_section_start = @search_tree_size + DATA_SECTION_SEPARATOR_SIZE
+          pos = (next_node_no - @node_count) - DATA_SECTION_SEPARATOR_SIZE
           return MaxMindDB::Result.new(decode(pos, data_section_start)[1])
         else
           node_no = next_node_no
@@ -53,22 +54,21 @@ module MaxMindDB
     private
 
     def read_record(node_no, flag)
-      node_byte_size = @metadata['node_byte_size']
-      rec_byte_size = node_byte_size / 2
-      pos = node_byte_size * node_no
-      middle = @data[pos + rec_byte_size, 1].unpack('C')[0] if node_byte_size.odd?
+      rec_byte_size = @node_byte_size / 2
+      pos = @node_byte_size * node_no
+      middle = @data[pos + rec_byte_size].ord if @node_byte_size.odd?
       if flag == 0 # left
-        val = read_value(pos, 0, rec_byte_size)[1]
+        val = read_value(pos, 0, rec_byte_size)
         val += ((middle & 0xf0) << 20) if middle
       else # right
-        val = read_value(pos + node_byte_size - rec_byte_size, 0, rec_byte_size)[1]
+        val = read_value(pos + @node_byte_size - rec_byte_size, 0, rec_byte_size)
         val += ((middle & 0xf) << 24) if middle
       end
       val
     end
 
     def decode(pos, base_pos)
-      ctrl = @data[pos + base_pos].unpack('C')[0]
+      ctrl = @data[pos + base_pos].ord
       pos += 1
 
       type = ctrl >> 5
@@ -76,20 +76,22 @@ module MaxMindDB
       if type == 1 # pointer
         size = ((ctrl >> 3) & 0x3) + 1
         v1 = ctrl & 0x7
-        pos, v2 = read_value(pos, base_pos, size)
+        v2 = read_value(pos, base_pos, size)
+        pos += size
 
         pointer = (v1 << (8 * size)) + v2 + POINTER_BASE_VALUES[size]
         val = decode(pointer, base_pos)[1]
       else
         if type == 0 # extended type
-          type = 7 + @data[pos + base_pos].unpack('C')[0]
+          type = 7 + @data[pos + base_pos].ord
           pos += 1
         end
 
         size = ctrl & 0x1f
         if size >= 29
           byte_size = size - 29 + 1
-          pos, val = read_value(pos, base_pos, byte_size)
+          val = read_value(pos, base_pos, byte_size)
+          pos += byte_size
           size = val + SIZE_BASE_VALUES[byte_size]
         end
 
@@ -104,9 +106,11 @@ module MaxMindDB
           val = @data[pos + base_pos, size]
           pos += size
         when 5 # unsigned 16-bit int
-          pos, val = read_value(pos, base_pos, size)
+          val = read_value(pos, base_pos, size)
+          pos += size
         when 6 # unsigned 32-bit int
-          pos, val = read_value(pos, base_pos, size)
+          val = read_value(pos, base_pos, size)
+          pos += size
         when 7 # map
           val = {}
           size.times do
@@ -120,9 +124,11 @@ module MaxMindDB
           val = (v1 & ~(1 << bits)) - (v1 & (1 << bits))
           pos += size
         when 9 # unsigned 64-bit int
-          pos, val = read_value(pos, base_pos, size)
+          val = read_value(pos, base_pos, size)
+          pos += size
         when 10 # unsigned 128-bit int
-          pos, val = read_value(pos, base_pos, size)
+          val = read_value(pos, base_pos, size)
+          pos += size
         when 11 # array
           val = []
           size.times do
@@ -146,8 +152,7 @@ module MaxMindDB
 
     def read_value(pos, base_pos, size)
       bytes = @data[pos + base_pos, size].unpack('C*')
-      val = bytes.inject(0){|r, v| (r << 8) + v }
-      [pos + size, val]
+      bytes.inject(0){|r, v| (r << 8) + v }
     end
 
     def addr_from_ip(ip)
