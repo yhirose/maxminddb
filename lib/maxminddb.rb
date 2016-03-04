@@ -23,6 +23,7 @@ module MaxMindDB
       pos += METADATA_BEGIN_MARKER.size
       metadata = decode(pos, 0)[1]
 
+      @ip_version = metadata['ip_version']
       @node_count = metadata['node_count']
       @node_byte_size = metadata['record_size'] * 2 / 8
       @search_tree_size = @node_count * @node_byte_size
@@ -35,7 +36,8 @@ module MaxMindDB
     def lookup(ip)
       node_no = 0
       addr = addr_from_ip(ip)
-      for i in 0 ... 128
+      start_idx = @ip_version == 4 ? 96 : 0
+      for i in start_idx ... 128
         flag = (addr >> (127 - i)) & 1
         next_node_no = read_record(node_no, flag)
         if next_node_no == 0

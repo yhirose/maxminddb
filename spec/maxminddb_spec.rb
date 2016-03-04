@@ -3,6 +3,7 @@ require 'maxminddb'
 describe MaxMindDB do
   let(:city_db) { MaxMindDB.new('spec/cache/GeoLite2-City.mmdb') }
   let(:country_db) { MaxMindDB.new('spec/cache/GeoLite2-Country.mmdb') }
+  let(:rec32_db) { MaxMindDB.new('spec/data/32bit_record_data.mmdb') }
 
   context 'for the ip 74.125.225.224' do
     let(:ip) { '74.125.225.224' }
@@ -81,6 +82,14 @@ describe MaxMindDB do
 
     it "doesn't find data" do
       expect(city_db.lookup(ip)).to_not be_found
+    end
+  end
+
+  context 'for 32bit record data' do
+    let(:ip) { '1.0.16.1' }
+
+    it 'finds data' do
+      expect(rec32_db.lookup(ip)).to be_found
     end
   end
 
