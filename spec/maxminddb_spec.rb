@@ -36,7 +36,7 @@ describe MaxMindDB do
       expect(country_db.lookup(ip).country.iso_code).to eq('US')
     end
 
-    context 'as a Fixnum' do
+    context 'as a Integer' do
       let(:integer_ip) { IPAddr.new(ip).to_i }
 
       it 'returns a MaxMindDB::Result' do
