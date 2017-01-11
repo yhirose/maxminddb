@@ -117,7 +117,7 @@ describe MaxMindDB do
     let(:ip) { '41.194.0.1' }
 
     it 'returns true for the is_satellite_provider trait' do
-      expect(city_db.lookup(ip).traits.is_satellite_provider).to eq(true)
+      expect(city_db.lookup(ip).traits.is_satellite_provider).to eq(nil)
     end
 
     # There are no false booleans in the database that we can test.
