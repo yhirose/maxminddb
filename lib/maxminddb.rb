@@ -14,6 +14,8 @@ module MaxMindDB
     SIZE_BASE_VALUES = [0, 29, 285, 65821]
     POINTER_BASE_VALUES = [0, 0, 2048, 526336]
 
+    attr_reader :metadata
+
     def initialize(path)
       @path = path
       @data = File.binread(path)
@@ -21,11 +23,11 @@ module MaxMindDB
       pos = @data.rindex(METADATA_BEGIN_MARKER)
       raise 'invalid file format' unless pos
       pos += METADATA_BEGIN_MARKER.size
-      metadata = decode(pos, 0)[1]
+      @metadata = decode(pos, 0)[1]
 
-      @ip_version = metadata['ip_version']
-      @node_count = metadata['node_count']
-      @node_byte_size = metadata['record_size'] * 2 / 8
+      @ip_version = @metadata['ip_version']
+      @node_count = @metadata['node_count']
+      @node_byte_size = @metadata['record_size'] * 2 / 8
       @search_tree_size = @node_count * @node_byte_size
     end
 

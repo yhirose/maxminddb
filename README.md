@@ -53,6 +53,14 @@ ret.country.name # => nil
 ret.to_hash # => {}
 ```
 
+It's also possible to access the database metadata.
+
+```ruby
+db = MaxMindDB.new('./GeoLite2-City.mmdb')
+db.metadata['build_epoch'] # => 1493762948
+db.metadata # => {"binary_format_major_version"=>2, "binary_format_minor_version"=>0, "build_epoch"=>1493762948, "database_type"=>"GeoLite2-City", "description"=>{"en"=>"GeoLite2 City database"}, "ip_version"=>6, "languages"=>["de", "en", "es", "fr", "ja", "pt-BR", "ru", "zh-CN"], "node_count"=>3678850, "record_size"=>28}
+```
+
 
 ## Contributing
 
