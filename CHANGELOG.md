@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.13 (June 13, 2017)
+
+- Expose database metadata #27
+
 ### 0.1.12 (January 11, 2017)
 
 - Removed Fixnum and Bignum deprecation warnings (in ruby 2.4)
