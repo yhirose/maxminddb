@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.14 (July 26, 2017)
+
+- Expose accuracy_radius in Location data #29
+
 ### 0.1.13 (June 13, 2017)
 
 - Expose database metadata #27
