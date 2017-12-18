@@ -20,7 +20,7 @@ module MaxMindDB
       def time_zone
         raw['time_zone']
       end
-      
+
       def accuracy_radius
         raw['accuracy_radius']
       end
