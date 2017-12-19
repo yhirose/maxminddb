@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.15 (December 18, 2017)
+
+- Implement #most_specific method for result subdivisions #31
+
 ### 0.1.14 (July 26, 2017)
 
 - Expose accuracy_radius in Location data #29
