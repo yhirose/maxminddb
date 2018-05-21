@@ -13,6 +13,10 @@ module MaxMindDB
         raw['geoname_id']
       end
 
+      def is_in_european_union
+        raw['is_in_european_union']
+      end
+
       def iso_code
         raw['iso_code']
       end
