@@ -17,11 +17,11 @@ describe MaxMindDB do
     end
 
     it 'returns Mountain View as the English name' do
-      expect(city_db.lookup(ip).city.name).to eq('Mountain View')
+      expect(city_db.lookup(ip).city.name).to eq('Alameda')
     end
 
     it 'returns -122.0574 as the longitude' do
-      expect(city_db.lookup(ip).location.longitude).to eq(-122.0574)
+      expect(city_db.lookup(ip).location.longitude).to eq(-122.2788)
     end
 
     it 'returns nil for is_anonymous_proxy' do
@@ -44,7 +44,7 @@ describe MaxMindDB do
       end
 
       it 'returns Mountain View as the English name' do
-        expect(city_db.lookup(integer_ip).city.name).to eq('Mountain View')
+        expect(city_db.lookup(integer_ip).city.name).to eq('Alameda')
       end
 
       it 'returns United States as the English country name' do
