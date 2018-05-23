@@ -32,6 +32,10 @@ describe MaxMindDB do
       expect(country_db.lookup(ip).country.name).to eq('United States')
     end
 
+    it 'returns false for the is_in_european_union' do
+      expect(country_db.lookup(ip).country.is_in_european_union).to eq(nil)
+    end
+
     it 'returns US as the country iso code' do
       expect(country_db.lookup(ip).country.iso_code).to eq('US')
     end
@@ -58,6 +62,10 @@ describe MaxMindDB do
 
     it 'finds data' do
       expect(city_db.lookup(ip)).to be_found
+    end
+
+    it 'returns false for the is_in_european_union' do
+      expect(country_db.lookup(ip).country.is_in_european_union).to eq(true)
     end
 
     it 'returns FI as the country iso code' do
