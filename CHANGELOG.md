@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.16 (May 22, 2018)
+
+- Adds is_in_european_union feature
+
 ### 0.1.15 (December 18, 2017)
 
 - Implement #most_specific method for result subdivisions #31
