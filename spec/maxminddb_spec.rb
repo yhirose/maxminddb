@@ -107,7 +107,7 @@ describe MaxMindDB do
       expect(country_db.lookup(ip).country.is_in_european_union).to eq(true)
     end
 
-    it 'returns GB as the country iso code' do
+    it 'returns DE as the country iso code' do
       expect(country_db.lookup(ip).country.iso_code).to eq('DE')
     end
   end
