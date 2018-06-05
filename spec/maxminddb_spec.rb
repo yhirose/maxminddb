@@ -64,7 +64,7 @@ describe MaxMindDB do
       expect(city_db.lookup(ip)).to be_found
     end
 
-    it 'returns false for the is_in_european_union' do
+    it 'returns true for the is_in_european_union' do
       expect(country_db.lookup(ip).country.is_in_european_union).to eq(true)
     end
 
@@ -78,6 +78,37 @@ describe MaxMindDB do
       it 'returns FI as the country iso code' do
         expect(country_db.lookup(integer_ip).country.iso_code).to eq('FI')
       end
+    end
+  end
+
+  context 'for a Canadian ipv6' do
+    let(:ip) { '2607:5300:60:72ba::' }
+    it 'finds data' do
+      expect(city_db.lookup(ip)).to be_found
+    end
+
+    it 'returns true for the is_in_european_union' do
+      expect(country_db.lookup(ip).country.is_in_european_union).to be_falsey
+    end
+
+    it 'returns CA as the country iso code' do
+      expect(country_db.lookup(ip).country.iso_code).to eq('CA')
+    end
+  end
+
+  context 'for a German IPv6' do
+    let(:ip) { '2a01:488:66:1000:2ea3:495e::1' }
+
+    it 'finds data' do
+      expect(city_db.lookup(ip)).to be_found
+    end
+
+    it 'returns false for the is_in_european_union' do
+      expect(country_db.lookup(ip).country.is_in_european_union).to eq(true)
+    end
+
+    it 'returns GB as the country iso code' do
+      expect(country_db.lookup(ip).country.iso_code).to eq('DE')
     end
   end
 
