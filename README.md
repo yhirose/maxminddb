@@ -66,6 +66,23 @@ db.metadata # => {"binary_format_major_version"=>2, "binary_format_minor_version
 
 A MaxMindDB instance doesn't do any write operation after it is created. So we can consider it as an immutable object which is 'thread-safe'.
 
+### Run a local web server
+
+```
+docker run --restart=always -p 8080:8080 -d -it samnissen/maxminddb
+curl localhost:8080/api?ip=1.2.3.4
+=> {"continent":{"code":"NA","geoname_id":6255149,"names":{"de":"Nordamerika","en":"North America","es":"Norteamérica","fr":"Amérique du Nord","ja":"北アメリカ","pt-BR":"América do Norte","ru":"Северная Америка","zh-CN":"北美洲"}},"country":{"geoname_id":6252001,"iso_code":"US","names":{"de":"USA","en":"United States","es":"Estados Unidos","fr":"États-Unis","ja":"アメリカ合衆国","pt-BR":"Estados Unidos","ru":"США","zh-CN":"美国"}},"location":{"accuracy_radius":1000,"latitude":37.751,"longitude":-97.822},"registered_country":{"geoname_id":2077456,"iso_code":"AU","names":{"de":"Australien","en":"Australia","es":"Australia","fr":"Australie","ja":"オーストラリア","pt-BR":"Austrália","ru":"Австралия","zh-CN":"澳大利亚"}}}
+```
+
+#### Or, fork this repo
+```
+git clone git@github.com:yhirose/maxminddb.git
+docker build -t maxminddb .
+docker run --restart=always -p 8080:8080 -d -it maxminddb
+curl localhost:8080/api?ip=1.2.3.4
+=> {"continent":{"code":"NA","geoname_id":6255149,"names":{"de":"Nordamerika","en":"North America","es":"Norteamérica","fr":"Amérique du Nord","ja":"北アメリカ","pt-BR":"América do Norte","ru":"Северная Америка","zh-CN":"北美洲"}},"country":{"geoname_id":6252001,"iso_code":"US","names":{"de":"USA","en":"United States","es":"Estados Unidos","fr":"États-Unis","ja":"アメリカ合衆国","pt-BR":"Estados Unidos","ru":"США","zh-CN":"美国"}},"location":{"accuracy_radius":1000,"latitude":37.751,"longitude":-97.822},"registered_country":{"geoname_id":2077456,"iso_code":"AU","names":{"de":"Australien","en":"Australia","es":"Australia","fr":"Australie","ja":"オーストラリア","pt-BR":"Austrália","ru":"Австралия","zh-CN":"澳大利亚"}}}
+```
+
 ## Contributing
 
 1. Fork it ( http://github.com/yhirose/maxminddb/fork )
