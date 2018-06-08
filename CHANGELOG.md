@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.17 (June 9, 2018)
+
+- Allow the database file reader to be overridden.
+- increase coverage for IPv6 and EU tests
+
 ### 0.1.16 (May 22, 2018)
 
 - Adds is_in_european_union feature
