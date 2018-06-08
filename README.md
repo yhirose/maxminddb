@@ -66,6 +66,10 @@ db.metadata # => {"binary_format_major_version"=>2, "binary_format_minor_version
 
 A MaxMindDB instance doesn't do any write operation after it is created. So we can consider it as an immutable object which is 'thread-safe'.
 
+### JSON web server on Docker
+
+maxminddb-docker: https://github.com/samnissen/maxminddb-docker
+
 ## Contributing
 
 1. Fork it ( http://github.com/yhirose/maxminddb/fork )
