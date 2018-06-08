@@ -4,8 +4,10 @@ require 'ipaddr'
 
 module MaxMindDB
 
-  def self.new(path)
-    Client.new(path)
+  DEFAULT_FILE_READER = proc { |path| File.binread(path) }
+
+  def self.new(path, file_reader=DEFAULT_FILE_READER)
+    Client.new(path, file_reader)
   end
 
   class Client
@@ -16,9 +18,9 @@ module MaxMindDB
 
     attr_reader :metadata
 
-    def initialize(path)
+    def initialize(path, file_reader)
       @path = path
-      @data = File.binread(path)
+      @data = file_reader.call(path)
 
       pos = @data.rindex(METADATA_BEGIN_MARKER)
       raise 'invalid file format' unless pos
