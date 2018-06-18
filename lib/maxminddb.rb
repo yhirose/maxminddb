@@ -18,7 +18,7 @@ module MaxMindDB
 
     attr_reader :metadata
 
-    def initialize(path, file_reader)
+    def initialize(path, file_reader = DEFAULT_FILE_READER)
       @path = path
       @data = file_reader.call(path)
 
