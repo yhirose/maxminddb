@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.18 (June 18, 2018)
+
+- Backward Compatible Client Initialize
+
 ### 0.1.17 (June 9, 2018)
 
 - Allow the database file reader to be overridden.
