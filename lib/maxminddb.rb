@@ -1,10 +1,11 @@
 require "maxminddb/version"
 require 'maxminddb/result'
+require 'maxminddb/reader'
 require 'ipaddr'
 
 module MaxMindDB
 
-  DEFAULT_FILE_READER = proc { |path| File.binread(path) }
+  DEFAULT_FILE_READER = proc { |path| MaxMindDB::Reader.new(path) }
 
   def self.new(path, file_reader=DEFAULT_FILE_READER)
     Client.new(path, file_reader)
