@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.19 (June 22, 2018)
+
+- Implement a faster default reader
+
 ### 0.1.18 (June 18, 2018)
 
 - Backward Compatible Client Initialize
