@@ -54,6 +54,17 @@ ret.country.name # => nil
 ret.to_hash # => {}
 ```
 
+For testing or other purposes, you might wish to treat localhost IP addresses as some other address - an external one. You can do this by assigning the desired external IP address to the attribute local_ip_alias:
+
+```ruby
+db = MaxMindDB.new('./GeoLite2-City.mmdb')
+ret = db.local_ip_alias = '74.125.225.224'
+ret = db.lookup('127.0.0.1')
+ret.found? # => true
+ret.country.name # => 'United States'
+ret.to_hash.empty? # => false
+```
+
 It's also possible to access the database metadata.
 
 ```ruby
