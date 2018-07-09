@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.20 (July 9, 2018)
+
+- Add local_ip_alias
+
 ### 0.1.19 (June 22, 2018)
 
 - Implement a faster default reader
