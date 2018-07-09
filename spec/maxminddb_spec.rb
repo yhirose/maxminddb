@@ -83,6 +83,7 @@ describe MaxMindDB do
 
   context 'for a Canadian ipv6' do
     let(:ip) { '2607:5300:60:72ba::' }
+
     it 'finds data' do
       expect(city_db.lookup(ip)).to be_found
     end
@@ -121,6 +122,54 @@ describe MaxMindDB do
 
     it "doesn't find data" do
       expect(city_db.lookup(ip)).to_not be_found
+    end
+  end
+
+  context 'for local ip addresses' do
+    let(:ip) { '127.0.0.1' }
+
+    context 'for city_db' do
+      before do
+        city_db.local_ip_alias = '74.125.225.224'
+      end
+
+      it 'returns a MaxMindDB::Result' do
+        expect(city_db.lookup(ip)).to be_kind_of(MaxMindDB::Result)
+      end
+
+      it 'finds data' do
+        expect(city_db.lookup(ip)).to be_found
+      end
+
+      it 'returns Mountain View as the English name' do
+        expect(city_db.lookup(ip).city.name).to eq('Alameda')
+      end
+
+      it 'returns -122.0574 as the longitude' do
+        expect(city_db.lookup(ip).location.longitude).to eq(-122.2788)
+      end
+
+      it 'returns nil for is_anonymous_proxy' do
+        expect(city_db.lookup(ip).traits.is_anonymous_proxy).to eq(nil)
+      end
+    end
+
+    context 'for country_db' do
+      before do
+        country_db.local_ip_alias = '74.125.225.224'
+      end
+
+      it 'returns United States as the English country name' do
+        expect(country_db.lookup(ip).country.name).to eq('United States')
+      end
+
+      it 'returns false for the is_in_european_union' do
+        expect(country_db.lookup(ip).country.is_in_european_union).to eq(nil)
+      end
+
+      it 'returns US as the country iso code' do
+        expect(country_db.lookup(ip).country.iso_code).to eq('US')
+      end
     end
   end
 

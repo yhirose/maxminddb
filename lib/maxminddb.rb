@@ -19,6 +19,9 @@ module MaxMindDB
 
     attr_reader :metadata
 
+    # An IP that is used instead of local IPs
+    attr_accessor :local_ip_alias
+
     def initialize(path, file_reader = DEFAULT_FILE_READER)
       @path = path
       @data = file_reader.call(path)
@@ -38,9 +41,13 @@ module MaxMindDB
       "#<MaxMindDB::Client: DBPath:'#{@path}'>"
     end
 
-    def lookup(ip)
+    def lookup(ip_or_hostname)
+      if @local_ip_alias && is_local?(ip_or_hostname)
+        ip_or_hostname = @local_ip_alias
+      end
+
       node_no = 0
-      addr = addr_from_ip(ip)
+      addr = addr_from_ip(ip_or_hostname)
       start_idx = @ip_version == 4 ? 96 : 0
       for i in start_idx ... 128
         flag = (addr >> (127 - i)) & 1
@@ -162,15 +169,19 @@ module MaxMindDB
       bytes.inject(0){|r, v| (r << 8) + v }
     end
 
-    def addr_from_ip(ip)
-      klass = ip.class
+    def addr_from_ip(ip_or_hostname)
+      klass = ip_or_hostname.class
 
-      return ip if RUBY_VERSION.to_f < 2.4 && (klass == Fixnum || klass == Bignum)
-      return ip if RUBY_VERSION.to_f >= 2.4 && klass == Integer
+      return ip_or_hostname if RUBY_VERSION.to_f < 2.4 && (klass == Fixnum || klass == Bignum)
+      return ip_or_hostname if RUBY_VERSION.to_f >= 2.4 && klass == Integer
 
-      addr = IPAddr.new(ip)
+      addr = IPAddr.new(ip_or_hostname)
       addr = addr.ipv4_compat if addr.ipv4?
       addr.to_i
+    end
+
+    def is_local?(ip_or_hostname)
+      ["127.0.0.1", "localhost", "::1", "0000::1", "0:0:0:0:0:0:0:1"].include? ip_or_hostname
     end
   end
 end
