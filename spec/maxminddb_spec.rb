@@ -104,7 +104,7 @@ describe MaxMindDB do
       expect(city_db.lookup(ip)).to be_found
     end
 
-    it 'returns false for the is_in_european_union' do
+    it 'returns true for the is_in_european_union' do
       expect(country_db.lookup(ip).country.is_in_european_union).to eq(true)
     end
 
