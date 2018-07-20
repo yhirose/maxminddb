@@ -1,6 +1,6 @@
 
 module MaxMindDB
-  class Reader
+  class LowMemoryReader
     METADATA_MAX_SIZE = 128 * 1024
 
     def initialize(path)
