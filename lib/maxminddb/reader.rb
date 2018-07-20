@@ -1,13 +1,6 @@
 
 require 'thread'
 
-begin
-  # For ruby versions that do not have IO.pread.
-  require 'io/extra'
-rescue LoadError
-  # Fallback to seek/read.
-end
-
 module MaxMindDB
   class LowMemoryReader
     METADATA_MAX_SIZE = 128 * 1024
@@ -30,8 +23,10 @@ module MaxMindDB
     end
 
     def atomic_read(length, pos)
-      if IO.respond_to?(:pread)
-        IO.pread(@file.fileno, length, pos)
+      # Prefer `pread` in environments where it is available. `pread` provides
+      # atomic file access across processes.
+      if @file.respond_to?(:pread)
+        @file.pread(length, pos)
       else
         @mutex.synchronize do
           @file.seek(pos)
