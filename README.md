@@ -81,10 +81,23 @@ A MaxMindDB instance doesn't do any write operation after it is created. So we c
 
 maxminddb-docker: https://github.com/samnissen/maxminddb-docker
 
+### File reading strategies
+
+By default, `MaxMinDB.new` will read the entire database into memory. This makes subsequent lookups fast, but can result in a fairly large memory overhead.
+
+If having a low memory overhead is important, you can use the `LowMemoryReader` by passing a `file_reader` argument to `MaxMindDB.new`. For example:
+
+```ruby
+db = MaxMindDB.new('./GeoLite2-City.mmdb', MaxMindDB::LOW_MEMORY_FILE_READER)
+ret = db.lookup('74.125.225.224')
+```
+
+The `LowMemoryReader` will not load the entire database into memory. It's important to note that for Ruby versions lower than `2.5.0`, the `LowMemoryReader` is not process safe. Forking a process after initializing a `MaxMindDB` instance can lead to unexpected results. For Ruby versions >= `2.5.0`, `LowMemoryReader` uses `File.pread` which works safely in forking environments.
+
 ## Contributing
 
-1. Fork it ( http://github.com/yhirose/maxminddb/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+1.  Fork it ( http://github.com/yhirose/maxminddb/fork )
+2.  Create your feature branch (`git checkout -b my-new-feature`)
+3.  Commit your changes (`git commit -am 'Add some feature'`)
+4.  Push to the branch (`git push origin my-new-feature`)
+5.  Create new Pull Request

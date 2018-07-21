@@ -5,7 +5,13 @@ require 'ipaddr'
 
 module MaxMindDB
 
-  DEFAULT_FILE_READER = proc { |path| MaxMindDB::Reader.new(path) }
+  # The default reader for MaxMindDB files. Reads the database into memory.
+  # This creates a higher memory overhead, but faster lookup times.
+  DEFAULT_FILE_READER = proc { |path| File.binread(path) }
+
+  # A low memory file reader for MaxMindDB files. Avoids reading the database
+  # into memory. Has a lower memory footprint but slower lookup times.
+  LOW_MEMORY_FILE_READER = proc { |path| MaxMindDB::LowMemoryReader.new(path) }
 
   def self.new(path, file_reader=DEFAULT_FILE_READER)
     Client.new(path, file_reader)

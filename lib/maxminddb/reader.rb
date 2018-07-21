@@ -1,6 +1,8 @@
 
+require 'thread'
+
 module MaxMindDB
-  class Reader
+  class LowMemoryReader
     METADATA_MAX_SIZE = 128 * 1024
 
     def initialize(path)
@@ -21,9 +23,15 @@ module MaxMindDB
     end
 
     def atomic_read(length, pos)
-      @mutex.synchronize do
-        @file.seek(pos)
-        @file.read(length)
+      # Prefer `pread` in environments where it is available. `pread` provides
+      # atomic file access across processes.
+      if @file.respond_to?(:pread)
+        @file.pread(length, pos)
+      else
+        @mutex.synchronize do
+          @file.seek(pos)
+          @file.read(length)
+        end
       end
     end
   end
