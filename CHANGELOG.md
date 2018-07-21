@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.21 (July 20, 2018)
+
+- Make the low-memory file reader opt-in
+
 ### 0.1.20 (July 9, 2018)
 
 - Add local_ip_alias
