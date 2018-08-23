@@ -101,3 +101,7 @@ The `LowMemoryReader` will not load the entire database into memory. It's import
 3.  Commit your changes (`git commit -am 'Add some feature'`)
 4.  Push to the branch (`git push origin my-new-feature`)
 5.  Create new Pull Request
+
+## Also see
+
+* [GeoLite2City](https://github.com/barsoom/geolite2_city), a Gem bundling the GeoLite2 City database.
