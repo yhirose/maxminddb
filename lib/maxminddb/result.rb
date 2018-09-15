@@ -57,6 +57,10 @@ module MaxMindDB
     def connection_type
       @_connection_type ||= raw['connection_type']
     end
+    
+    def network
+      @_network ||= raw['network']
+    end
 
     def to_hash
       @_to_hash ||= raw.clone

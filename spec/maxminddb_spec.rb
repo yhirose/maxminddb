@@ -46,6 +46,10 @@ describe MaxMindDB do
         it 'returns US as the country iso code' do
           expect(country_db.lookup(ip).country.iso_code).to eq('US')
         end
+        
+        it 'returns 74.125.192.0/18 as network' do 
+          expect(country_db.lookup(ip).network).to eq('74.125.192.0/18')
+        end
 
         context 'as a Integer' do
           let(:integer_ip) { IPAddr.new(ip).to_i }
@@ -77,6 +81,10 @@ describe MaxMindDB do
 
         it 'returns FI as the country iso code' do
           expect(country_db.lookup(ip).country.iso_code).to eq('FI')
+        end
+        
+        it 'returns 2001:708::/32 as network' do 
+          expect(country_db.lookup(ip).network).to eq('2001:708::/32')
         end
 
         context 'as an integer' do
