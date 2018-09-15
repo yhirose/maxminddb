@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.22 (September 15, 2018)
+
+- Result includes 'network'
+
 ### 0.1.21 (July 20, 2018)
 
 - Make the low-memory file reader opt-in
