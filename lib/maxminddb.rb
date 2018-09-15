@@ -63,7 +63,9 @@ module MaxMindDB
         elsif next_node_no >= @node_count
           data_section_start = @search_tree_size + DATA_SECTION_SEPARATOR_SIZE
           pos = (next_node_no - @node_count) - DATA_SECTION_SEPARATOR_SIZE
-          return MaxMindDB::Result.new(decode(pos, data_section_start)[1])
+          result            = decode(pos, data_section_start)[1]
+          result['network'] = network_from_addr(addr, i) unless result.empty?
+          return MaxMindDB::Result.new(result)
         else
           node_no = next_node_no
         end
@@ -184,6 +186,16 @@ module MaxMindDB
       addr = IPAddr.new(ip_or_hostname)
       addr = addr.ipv4_compat if addr.ipv4?
       addr.to_i
+    end
+    
+    def network_from_addr(addr, i)
+      fam  = addr > 4294967295 ? Socket::AF_INET6 : Socket::AF_INET
+      ip   = IPAddr.new(addr, family = fam)
+      
+      subnet_size = ip.ipv4? ? i - 96 + 1 : i + 1
+      subnet      = IPAddr.new("#{ip}/#{subnet_size}")
+      
+      "#{subnet}/#{subnet_size}"
     end
 
     def is_local?(ip_or_hostname)
