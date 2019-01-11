@@ -41,6 +41,16 @@ module MaxMindDB
       @node_count = @metadata['node_count']
       @node_byte_size = @metadata['record_size'] * 2 / 8
       @search_tree_size = @node_count * @node_byte_size
+      @data_section_start = @search_tree_size + DATA_SECTION_SEPARATOR_SIZE
+    end
+
+    def each
+      epos = @data.rindex(METADATA_BEGIN_MARKER)
+      off = 0
+      while @data_section_start + off < epos
+        off, result = decode(off, @data_section_start)
+        yield MaxMindDB::Result.new(result)
+      end
     end
 
     def inspect
@@ -61,9 +71,8 @@ module MaxMindDB
         if next_node_no == 0
           raise 'invalid file format'
         elsif next_node_no >= @node_count
-          data_section_start = @search_tree_size + DATA_SECTION_SEPARATOR_SIZE
           pos = (next_node_no - @node_count) - DATA_SECTION_SEPARATOR_SIZE
-          result            = decode(pos, data_section_start)[1]
+          result            = decode(pos, @data_section_start)[1]
           result['network'] = network_from_addr(addr, i) unless result.empty?
           return MaxMindDB::Result.new(result)
         else
@@ -187,14 +196,14 @@ module MaxMindDB
       addr = addr.ipv4_compat if addr.ipv4?
       addr.to_i
     end
-    
+
     def network_from_addr(addr, i)
       fam  = addr > 4294967295 ? Socket::AF_INET6 : Socket::AF_INET
       ip   = IPAddr.new(addr, family = fam)
-      
+
       subnet_size = ip.ipv4? ? i - 96 + 1 : i + 1
       subnet      = IPAddr.new("#{ip}/#{subnet_size}")
-      
+
       "#{subnet}/#{subnet_size}"
     end
 
