@@ -1,6 +1,6 @@
-require "maxminddb/version"
-require 'maxminddb/result'
-require 'maxminddb/reader'
+require_relative "maxminddb/version"
+require_relative 'maxminddb/result'
+require_relative 'maxminddb/reader'
 require 'ipaddr'
 
 module MaxMindDB
