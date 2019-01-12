@@ -12,8 +12,8 @@ describe MaxMindDB do
       let(:country_db) { MaxMindDB.new('spec/cache/GeoLite2-Country.mmdb', reader) }
       let(:rec32_db) { MaxMindDB.new('spec/data/32bit_record_data.mmdb', reader) }
 
-      context 'for the ip 74.125.225.224' do
-        let(:ip) { '74.125.225.224' }
+      context 'for the ip 4.78.241.0' do
+        let(:ip) { '4.78.241.0' }
 
         it 'returns a MaxMindDB::Result' do
           expect(city_db.lookup(ip)).to be_kind_of(MaxMindDB::Result)
@@ -24,11 +24,11 @@ describe MaxMindDB do
         end
 
         it 'returns Mountain View as the English name' do
-          expect(city_db.lookup(ip).city.name).to eq('Alameda')
+          expect(city_db.lookup(ip).city.name).to eq('Mountain View')
         end
 
-        it 'returns -122.0574 as the longitude' do
-          expect(city_db.lookup(ip).location.longitude).to eq(-122.2788)
+        it 'returns -122.0775 as the longitude' do
+          expect(city_db.lookup(ip).location.longitude).to eq(-122.0775)
         end
 
         it 'returns nil for is_anonymous_proxy' do
@@ -46,9 +46,9 @@ describe MaxMindDB do
         it 'returns US as the country iso code' do
           expect(country_db.lookup(ip).country.iso_code).to eq('US')
         end
-        
-        it 'returns 74.125.192.0/18 as network' do 
-          expect(country_db.lookup(ip).network).to eq('74.125.192.0/18')
+
+        it 'returns 4.78.128.0/17 as network' do
+          expect(country_db.lookup(ip).network).to eq('4.78.128.0/17')
         end
 
         context 'as a Integer' do
@@ -59,7 +59,7 @@ describe MaxMindDB do
           end
 
           it 'returns Mountain View as the English name' do
-            expect(city_db.lookup(integer_ip).city.name).to eq('Alameda')
+            expect(city_db.lookup(ip).city.name).to eq('Mountain View')
           end
 
           it 'returns United States as the English country name' do
@@ -82,8 +82,8 @@ describe MaxMindDB do
         it 'returns FI as the country iso code' do
           expect(country_db.lookup(ip).country.iso_code).to eq('FI')
         end
-        
-        it 'returns 2001:708::/32 as network' do 
+
+        it 'returns 2001:708::/32 as network' do
           expect(country_db.lookup(ip).network).to eq('2001:708::/32')
         end
 
@@ -145,7 +145,7 @@ describe MaxMindDB do
 
         context 'for city_db' do
           before do
-            city_db.local_ip_alias = '74.125.225.224'
+            city_db.local_ip_alias = '4.78.241.0'
           end
 
           it 'returns a MaxMindDB::Result' do
@@ -157,11 +157,11 @@ describe MaxMindDB do
           end
 
           it 'returns Mountain View as the English name' do
-            expect(city_db.lookup(ip).city.name).to eq('Alameda')
+            expect(city_db.lookup(ip).city.name).to eq('Mountain View')
           end
 
-          it 'returns -122.0574 as the longitude' do
-            expect(city_db.lookup(ip).location.longitude).to eq(-122.2788)
+          it 'returns -122.0775 as the longitude' do
+            expect(city_db.lookup(ip).location.longitude).to eq(-122.0775)
           end
 
           it 'returns nil for is_anonymous_proxy' do
@@ -171,7 +171,7 @@ describe MaxMindDB do
 
         context 'for country_db' do
           before do
-            country_db.local_ip_alias = '74.125.225.224'
+            country_db.local_ip_alias = '4.78.241.0'
           end
 
           it 'returns United States as the English country name' do
