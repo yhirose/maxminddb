@@ -44,15 +44,6 @@ module MaxMindDB
       @data_section_start = @search_tree_size + DATA_SECTION_SEPARATOR_SIZE
     end
 
-    def each
-      epos = @data.rindex(METADATA_BEGIN_MARKER)
-      off = 0
-      while @data_section_start + off < epos
-        off, result = decode(off, @data_section_start)
-        yield MaxMindDB::Result.new(result)
-      end
-    end
-
     def inspect
       "#<MaxMindDB::Client: DBPath:'#{@path}'>"
     end
