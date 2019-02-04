@@ -6,7 +6,7 @@ You can find more information about the GeoIP2 database [here](http://dev.maxmin
 
 [![Gem Version](https://badge.fury.io/rb/maxminddb.svg)](http://badge.fury.io/rb/maxminddb)
 [![Build Status](https://travis-ci.org/yhirose/maxminddb.svg?branch=master)](https://travis-ci.org/yhirose/maxminddb)
-[![Code Climate](https://codeclimate.com/github/yhirose/maxminddb.png)](https://codeclimate.com/github/yhirose/maxminddb)
+[![Code Climate](https://codeclimate.com/github/yhirose/maxminddb.svg)](https://codeclimate.com/github/yhirose/maxminddb)
 
 ## Installation
 
