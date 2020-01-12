@@ -77,10 +77,6 @@ db.metadata # => {"binary_format_major_version"=>2, "binary_format_minor_version
 
 A MaxMindDB instance doesn't do any write operation after it is created. So we can consider it as an immutable object which is 'thread-safe'.
 
-### JSON web server on Docker
-
-maxminddb-docker: https://github.com/samnissen/maxminddb-docker
-
 ### File reading strategies
 
 By default, `MaxMinDB.new` will read the entire database into memory. This makes subsequent lookups fast, but can result in a fairly large memory overhead.
@@ -101,7 +97,3 @@ The `LowMemoryReader` will not load the entire database into memory. It's import
 3.  Commit your changes (`git commit -am 'Add some feature'`)
 4.  Push to the branch (`git push origin my-new-feature`)
 5.  Create new Pull Request
-
-## Also see
-
-* [GeoLite2City](https://github.com/barsoom/geolite2_city), a Gem bundling the GeoLite2 City database.
