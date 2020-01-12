@@ -1,20 +1,15 @@
 language: ruby
 rvm:
-  - 1.9.3
-  - 2.0
-  - 2.1
-  - 2.2
-  - 2.3
-  - 2.4.5
-  - 2.5.3
-  - 2.6.0
-  - jruby-19mode
-
+- 2.4
+- 2.5
+- 2.6
+- 2.7
 script: bundle exec rake
-
 before_install:
-  - gem update bundler
-
+- gem update bundler
 cache:
   directories:
-    - spec/cache
+  - spec/cache
+env:
+  global:
+    secure: VCgYOWeLKAAiXnLw3vWLs8PRbSg4pPLeLZPbBCIRUQKqttzL6pEL28lkB/05YVbu1v9wQxogtk0zv+ZacJK0SbIL96BHVrCaRebWik5A8UOoOGTanTQj0SRCCmacrOm3EhWF9t262uv31byAdw73S08jCPIYd2JqA5IOrcJYJ0Y=

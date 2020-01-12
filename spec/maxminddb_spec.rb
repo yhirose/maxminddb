@@ -27,8 +27,8 @@ describe MaxMindDB do
           expect(city_db.lookup(ip).city.name).to eq('Mountain View')
         end
 
-        it 'returns -122.0775 as the longitude' do
-          expect(city_db.lookup(ip).location.longitude).to eq(-122.0775)
+        it 'returns -122.0748 as the longitude' do
+          expect(city_db.lookup(ip).location.longitude).to eq(-122.0748)
         end
 
         it 'returns nil for is_anonymous_proxy' do
@@ -160,8 +160,8 @@ describe MaxMindDB do
             expect(city_db.lookup(ip).city.name).to eq('Mountain View')
           end
 
-          it 'returns -122.0775 as the longitude' do
-            expect(city_db.lookup(ip).location.longitude).to eq(-122.0775)
+          it 'returns -122.0748 as the longitude' do
+            expect(city_db.lookup(ip).location.longitude).to eq(-122.0748)
           end
 
           it 'returns nil for is_anonymous_proxy' do
