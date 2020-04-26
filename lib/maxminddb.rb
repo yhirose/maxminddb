@@ -32,6 +32,7 @@ module MaxMindDB
       @path = path
       @data = file_reader.call(path)
 
+      @local_ip_alias = nil
       pos = @data.rindex(METADATA_BEGIN_MARKER)
       raise 'invalid file format' unless pos
       pos += METADATA_BEGIN_MARKER.size
