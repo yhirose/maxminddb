@@ -185,7 +185,7 @@ module MaxMindDB
       return ip_or_hostname if RUBY_VERSION.to_f >= 2.4 && klass == Integer
 
       addr = IPAddr.new(ip_or_hostname)
-      addr = addr.ipv4_compat if addr.ipv4?
+      addr = addr.ipv4_mapped if addr.ipv4?
       addr.to_i
     end
 
